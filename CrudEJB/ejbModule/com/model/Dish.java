@@ -35,9 +35,9 @@ public class Dish {
 	@OneToMany(mappedBy = "dish") //ewentualnie zmienic na dishes
     private List<Ingredient> ingredients;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+/*	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
-	private Order order;
+	private Order order;*/
 	
 	public int getId() {
 		return id;
@@ -87,13 +87,13 @@ public class Dish {
 		this.ingredients = ingredients;
 	}
 
-	public Order getOrder() {
+/*	public Order getOrder() {
 		return order;
 	}
 
 	public void setOrder(Order order) {
 		this.order = order;
-	}
+	}*/
 	
 	@Override
 	public int hashCode() {

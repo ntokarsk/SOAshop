@@ -13,15 +13,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-6">
-                    <h1 >Szybka przerwa na jedzenie</h1>
-                </div>
-                <div class="col-sm-12 col-md-6">
                     <h:form>
                         <p:growl id="messages"/>
                         <p:menubar id="headerCartSize">
                             <p:submenu label="USER"  icon="ui-icon-user">
                                 <p:menuitem value="Menu" url="/pages/protected/user/categories.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
-                                <p:menuitem value="Lista zamówień" url="/user/orders.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                                <p:menuitem value="Lista zamówień" url="/pages/protected/user/orderHistory.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
                                 <p:submenu label="Subskrybcje" icon="ui-icon-arrowreturnthick-1-e">
                                     <p:menuitem value="Lista subskrybcji" url="/user/subscription/list.xhtml"/>
                                     <p:menuitem value="Stwórz subskrybcję" url="/user/subscription/new.xhtml"/>

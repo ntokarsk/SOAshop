@@ -18,26 +18,32 @@
 			<div class="container">
 				<h:form>
 					<h:messages />
-					<p:dataTable rendered="#{orderController.listNotNull}"
-						value="#{orderController.orderedDishesList}" var="dish">
+					<h2>Orders History</h2>
+					<p:dataTable
+						value="#{orderController.getOrdersByUser(userMB.user)}"
+						var="order">
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Cart" />
+								<h:outputText value="Price" />
 							</f:facet>
-							<h:outputText value="#{dish.price} PLN   | #{dish.name}" />
-							<br></br>
-							<h:commandButton
-								action="#{orderController.removeFromList(dish.id)}"
-								value="#{msgs.delete}" rendered="#{userMB.userUser}">
-							</h:commandButton>
+							<h:outputText
+								value="#{order.price}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Dishes" />
+							</f:facet>
+							<h:outputText
+								value="#{order.description}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Payment" />
+							</f:facet>
+							<h:outputText
+								value="#{order.payment}" />
 						</p:column>
 					</p:dataTable>
-				</h:form>
-				<h:form>
-					<h:commandButton
-						value="#{msgs.payment}"
-						rendered="#{orderController.listNotNull}"
-						action="#{orderController.payForOrder(userMB.user)}"/>
 				</h:form>
 			</div>
 		</ui:define>

@@ -11,17 +11,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.facade.DishFacade;
-import com.model.Dish;
 import com.facade.OrderFacade;
+import com.model.Dish;
 import com.model.Order;
-
+import com.model.User;
 
 @ManagedBean
 @SessionScoped
 public class OrderController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final String STAY_IN_THE_SAME_PAGE = null;
 
 	@EJB
@@ -30,7 +30,7 @@ public class OrderController implements Serializable {
 	private Dish dish;
 
 	private List<Dish> orderedDishesList;
-	
+
 	@EJB
 	private OrderFacade orderFacade;
 	private Order order;
@@ -46,14 +46,14 @@ public class OrderController implements Serializable {
 	}
 
 	public void addDishToCart(Dish dish) {
-		if(this.orderedDishesList == null) {
+		if (this.orderedDishesList == null) {
 			orderedDishesList = new ArrayList<Dish>();
 		}
 		setDish(dish);
 		orderedDishesList.add(getDish());
-		
+
 		sendInfoMessageToUser("Dish added to your cart");
-		
+
 		if (dish.getPrice() != 0)
 			setOrderPrice(getOrderPrice() + dish.getPrice());
 	}
@@ -61,32 +61,55 @@ public class OrderController implements Serializable {
 	public List<Dish> getOrderedDishesList() {
 		return orderedDishesList;
 	}
-	
-/*	public String payForOrder(){
-		registerOrder();
-		checkPayment();
+
+	public String payForOrder(User user) {
+		// checkPayment();
+		registerOrder(user);
 		return STAY_IN_THE_SAME_PAGE;
-	}*/
-	
-	public void registerOrder(){
-		
 	}
 
-	public void addToOrderdDishesList(Dish _dish) {
+	public void registerOrder(User user) {
 		try {
-			dish.setId(_dish.getId());
-			dish.setCategories(_dish.getCategories());
-			dish.setIngredients(_dish.getIngredients());
-			dish.setName(_dish.getName());
-			dish.setPrice(_dish.getPrice());
-			orderedDishesList.add(dish);
-			//orderedDishesList.add(new MockDish(_dish.getName(), _dish.getId(), _dish.getPrice()));
-			//System.out.println("LIIIIIIIIIIIIIST SIZE = " + orderedDishesList.size());
+			if(order==null){
+				order = new Order();
+			}
+			order.setUser(user);
+			order.setPayment(true);
+			Integer price_now = new Integer((int)getOrderPrice());
+			order.setPrice(price_now);
+			String description = "";
+			for (int i = 0; i < this.orderedDishesList.size(); i++) {
+				description = description + this.orderedDishesList.get(i).getName() +", ";
+			}
+			order.setDescription(description);
+			orderFacade.update(order);
+			clearEverything();
+			sendInfoMessageToUser("successfull payment");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
+	
+	private void clearEverything(){
+		orderedDishesList.clear();
+		orderedDishesList=null;
+		orderPrice = 0;
+		order = null;
+	}
+	
+	public List<Order> getOrdersByUser(User user) {
+		List<Order> list = orderFacade.findAll();
+		
+		for(int i = 0; i < list.size(); i++){
+			String tmpEmail = list.get(i).getUser().getEmail();
+			if(!tmpEmail.equals(user.getEmail())){
+				list.remove(i--);
+			}
+		}
+		return list;
+	}
+	
 	public boolean isListNotNull() {
 		if (this.orderedDishesList != null)
 			return true;
@@ -97,11 +120,14 @@ public class OrderController implements Serializable {
 	public String removeFromList(int id) {
 		for (int i = 0; i < this.orderedDishesList.size(); i++) {
 			if (this.orderedDishesList.get(i).getId() == id) {
-				setOrderPrice(getOrderPrice() - this.orderedDishesList.get(i).getPrice());
+				setOrderPrice(getOrderPrice()
+						- this.orderedDishesList.get(i).getPrice());
 				this.orderedDishesList.remove(i);
 				sendInfoMessageToUser("Operation Complete: Delete");
 			}
 		}
+		if(this.orderedDishesList.size() == 0) 
+			this.orderedDishesList = null;
 		
 		return STAY_IN_THE_SAME_PAGE;
 	}
@@ -157,10 +183,11 @@ public class OrderController implements Serializable {
 			this.price = price;
 		}
 	}
-	
-	private void sendInfoMessageToUser(String message){
+
+	private void sendInfoMessageToUser(String message) {
 		FacesContext context = getContext();
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				message, message));
 	}
 
 	private FacesContext getContext() {
