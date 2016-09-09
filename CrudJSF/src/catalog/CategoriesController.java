@@ -103,15 +103,10 @@ public class CategoriesController {
 	//DANGER ZONE END
 	
 	public String deleteCategoriesEnd(Categories categories1) {
-		System.err.println("jestem tutaj kurwo");
 		for (Dish dish : dishFacade.findAll()) {
-			System.err.println("jestem tutaj kurwo FOR");
 			if (categories1.getId() == dish.getCategories().getId()) {
-				System.err.println("jestem tutaj kurwo IF");
 				for (Ingredient ingredient : ingredientFacade.findAll()) {
-					System.err.println("jestem tutaj kurwo DRUGI FOR");
 					if (dish.getId() == ingredient.getDish().getId()) {
-						System.err.println("jestem tutaj kurwo DRUGI IF");
 						ingredientFacade.delete(ingredient);
 					}
 				}

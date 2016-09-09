@@ -43,8 +43,11 @@
 								<p:column>
 									<h:outputText value="#{dish.name}"
 										rendered="#{categories.id==dish.categories.id}" />
-									<h:commandButton value="order"
-										rendered="#{categories.id==dish.categories.id and userMB.userUser}" />
+									<h:commandButton action="#{orderController.addDishToCart(dish)}"
+									value="order" 
+									rendered="#{categories.id==dish.categories.id and userMB.userUser}" 
+									
+									/>
 									<h:commandButton
 										action="#{categoriesController.deleteMealStart(dish)}"
 										value="#{msgs.delete}"
@@ -72,9 +75,6 @@
 						</p:column>
 						<!--                       DANGER ZONE END                          -->
 					</p:dataTable>
-					<!-- This button is displayed to the user, just to you see the error msg  -->
-					<h:commandButton action="createDog"
-						value="#{msgs.create} #{msgs.dog}" />
 				</h:form>
 			</div>
 		</ui:define>

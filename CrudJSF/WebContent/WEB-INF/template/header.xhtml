@@ -43,7 +43,7 @@
                                 <p:menuitem value="Dodaj pozycję menu" url="/manager/course/new.xhtml" icon="ui-icon-arrowreturnthick-1-e" />
                                 <p:menuitem value="Dodaj składnik" url="/manager/ingredient/new.xhtml" icon="ui-icon-arrowreturnthick-1-e"/>
                             </p:submenu>
-                            <p:menuitem value="Koszyk: #{orderBean.courseList.size()}" url="/user/cart.xhtml"/>
+                            <p:menuitem value="Cart: #{orderController.orderPrice}" url="/pages/protected/user/cart.xhtml"/>
                             <p:menuitem action="#{userMB.logOut()}" value="#{msgs.logout}"/>
                             
                             
