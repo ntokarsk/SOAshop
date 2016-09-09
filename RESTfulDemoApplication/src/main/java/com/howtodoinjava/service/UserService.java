@@ -25,10 +25,16 @@ public class UserService {
 	@Produces("application/json")
 	@Path("listalldish")
 	public Response getAllMeals(){
-		System.err.println("getAllMeals started");
 		List<String> dishes = this.getDishes("dishes");
-		System.err.println("getAllMeals end");
 		return Response.ok(dishes).build();
+	}
+	
+	@GET
+	@Produces("application/json")
+	@Path("listallorders")
+	public Response getAllOrders(){
+		List<String> orders = this.getOrders("orders");
+		return Response.ok(orders).build();
 	}
 	
 	@GET
@@ -45,17 +51,55 @@ public class UserService {
 		List<String> dishes = this.getDishes("dishes where categories_id="+id);
 		return Response.ok(dishes).build();
 	}
-
+	
+	public List<String> getOrders(String what) {
+		List<String> lista = new ArrayList<String>();
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CrudDB", "postgres", "admin");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM "+what+";");
+			while (rs.next()) {
+				int id = rs.getInt("order_id");
+				String description = rs.getString("description");
+				String price = rs.getString("price");
+				String tmp = "id = " + id + "; "  + description + "; " + price + " PLN";
+				lista.add(tmp);
+				/*
+				 * int age = rs.getInt("age"); String address =
+				 * rs.getString("address"); float salary =
+				 * rs.getFloat("salary");
+				 */
+			//	System.out.print("ID = " + id + " | ");
+			//	System.out.print("NAME = " + name);
+				/*
+				 * System.out.println( "AGE = " + age ); System.out.println(
+				 * "ADDRESS = " + address ); System.out.println( "SALARY = " +
+				 * salary );
+				 */
+			}
+			rs.close();
+			stmt.close();
+			c.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		
+		return lista;
+	}
+	
 	public List<String> getDishes(String what) {
 		List<String> lista = new ArrayList<String>();
 		Connection c = null;
 		Statement stmt = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:postgresql://localhost:5432/CrudDB", "postgres", "admin");
+			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/CrudDB", "postgres", "admin");
 			c.setAutoCommit(false);
-			System.out.println("Opened database successfully");
 			stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM "+what+";");
 			while (rs.next()) {
@@ -83,7 +127,6 @@ public class UserService {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
-		System.out.println("Operation done successfully");
 		
 		return lista;
 	}
