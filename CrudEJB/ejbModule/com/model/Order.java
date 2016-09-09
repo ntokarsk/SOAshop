@@ -1,12 +1,15 @@
 package com.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,13 @@ public class Order {
 	private int order_id;
 	private boolean payment;
 	private int price;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@OneToMany(mappedBy="order")
+	private List<Dish> dishes;
 
 	public int getOrder_id() {
 		return order_id;
@@ -46,6 +56,22 @@ public class Order {
 		this.price = price;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public List<Dish> getDishes() {
+		return dishes;
+	}
+
+	public void setDishes(List<Dish> dishes) {
+		this.dishes = dishes;
+	}
+	
 	@Override
 	public int hashCode() {
 		return getOrder_id();

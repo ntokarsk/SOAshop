@@ -35,6 +35,10 @@ public class Dish {
 	@OneToMany(mappedBy = "dish") //ewentualnie zmienic na dishes
     private List<Ingredient> ingredients;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "order_id")
+	private Order order;
+	
 	public int getId() {
 		return id;
 	}
@@ -67,22 +71,6 @@ public class Dish {
 		this.description = description;
 	}
 	
-	@Override
-	public int hashCode() {
-		return getId();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		
-		if(obj instanceof Dish){
-			Dish dish = (Dish) obj;
-			return dish.getId() == getId();
-		}
-		
-		return false;
-	}
-
 	public Categories getCategories() {
 		return categories;
 	}
@@ -97,5 +85,29 @@ public class Dish {
 
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+	@Override
+	public int hashCode() {
+		return getId();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj instanceof Dish){
+			Dish dish = (Dish) obj;
+			return dish.getId() == getId();
+		}
+		
+		return false;
 	}
 }
