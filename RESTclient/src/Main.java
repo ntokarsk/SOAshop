@@ -45,8 +45,7 @@ public class Main {
                     (new GetAllDishesRestService()).run();
                     break;
                 case 3:
-                	/*input2 = scanner.nextLine();
-                    (new GetDishByCategory(new Integer(input2))).run();*/
+                    (new GetAllOrdersRestService()).run();
                     break;
                 default:
                     System.out.println("Nieprawidlowa operacja");
@@ -59,7 +58,7 @@ public class Main {
         System.out.println("\n----\nAplikacja kliencka serwisu REST");
         System.out.println("[1] - pobierz wszystkie kategorie [JSON]");
         System.out.println("[2] - pobierz wszystkie posilki [JSON]");
-        //System.out.println("[3] - dodaj pozycje w wybranej kategorii");
+        System.out.println("[3] - pobierz wszystkie zamowienia");
         System.out.println("[0] - zakoncz");
         System.out.println("Wybor: ");
     }
