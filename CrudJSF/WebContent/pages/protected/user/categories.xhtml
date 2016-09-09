@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xml:lang="en" lang="en">
+<h:head>
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/themes/bootstrap/skin.css" />
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/template/template.xhtml">
+		<ui:define name="content">
+			<div class="container">
+				<h:form>
+					<h:messages />
+					<p:dataTable value="#{categoriesController.allCategories}"
+						var="categories">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Categories" />
+							</f:facet>
+							<h:outputText value="#{categories.name}" />
+							<br></br>
+							<h:commandButton
+								action="#{categoriesController.deleteCategoriesEnd(categories)}"
+								value="#{msgs.delete}" rendered="#{userMB.userAdmin}">
+							</h:commandButton>
+						</p:column>
+						<!-- 						DANGER ZONE START						 -->
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Meals" />
+							</f:facet>
+
+							<h:dataTable
+								value="#{categoriesController.getAllDishByCat(categories.id)}"
+								var="dish">
+								<p:column>
+									<h:outputText value="#{dish.name}"
+										rendered="#{categories.id==dish.categories.id}" />
+									<h:commandButton value="order"
+										rendered="#{categories.id==dish.categories.id and userMB.userUser}" />
+									<h:commandButton
+										action="#{categoriesController.deleteMealStart(dish)}"
+										value="#{msgs.delete}"
+										rendered="#{categories.id==dish.categories.id and userMB.userAdmin}">
+									</h:commandButton>
+								</p:column>
+								<p:column>
+									<p:panelGrid columns="2"
+										rendered="#{categories.id==dish.categories.id}">
+										<ui:repeat value="#{categoriesController.allIngredients}"
+											var="ingredient">
+											<p:panelGrid columns="4"
+												rendered="#{ingredient.dish.id==dish.id}">
+												<h:outputText value="#{ingredient.name}" />
+												<h:commandButton
+													action="#{dishController.deleteIngredient(ingredient)}"
+													value="#{msgs.delete}"
+													rendered="#{categories.id==dish.categories.id and userMB.userAdmin}">
+												</h:commandButton>
+											</p:panelGrid>
+										</ui:repeat>
+									</p:panelGrid>
+								</p:column>
+							</h:dataTable>
+						</p:column>
+						<!--                       DANGER ZONE END                          -->
+					</p:dataTable>
+					<!-- This button is displayed to the user, just to you see the error msg  -->
+					<h:commandButton action="createDog"
+						value="#{msgs.create} #{msgs.dog}" />
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

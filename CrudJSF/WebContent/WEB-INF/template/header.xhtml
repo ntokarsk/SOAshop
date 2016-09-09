@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xml:lang="en" lang="en">
+<h:body>
+    <ui:composition>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <h1 >Szybka przerwa na jedzenie</h1>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <h:form>
+                        <p:growl id="messages"/>
+                        <p:menubar id="headerCartSize">
+                            <p:submenu label="USER"  icon="ui-icon-user">
+                                <p:menuitem value="Menu" url="/pages/protected/user/categories.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                                <p:menuitem value="Lista zamówień" url="/user/orders.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                                <p:submenu label="Subskrybcje" icon="ui-icon-arrowreturnthick-1-e">
+                                    <p:menuitem value="Lista subskrybcji" url="/user/subscription/list.xhtml"/>
+                                    <p:menuitem value="Stwórz subskrybcję" url="/user/subscription/new.xhtml"/>
+                                </p:submenu>
+                                <p:menuitem value="Ustawienia" url="/user/settings/index.xhtml" icon="ui-icon-arrowreturnthick-1-e" />
+                            </p:submenu>
+                            <p:submenu label="ADMIN" rendered="#{userMB.userAdmin()}" icon="ui-icon-user">
+                                <p:menuitem value="Dodaj kategorię" url="/pages/protected/admin/addCategory.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                                <p:menuitem value="Dodaj pozycję menu" url="/pages/protected/admin/addDish.xhtml" icon="ui-icon-arrowreturnthick-1-e" />
+                            </p:submenu>
+                            <p:submenu label="trzecie" icon="ui-icon-user">
+                                <p:menuitem value="Lista zamówień" url="/employee/order/list.xhtml" icon="ui-icon-arrowreturnthick-1-w" />
+                            </p:submenu>
+                            <p:submenu label="czwarte" icon="ui-icon-user">
+                                <p:submenu label="Firmy" icon="ui-icon-arrowreturnthick-1-e">
+                                    <p:menuitem value="Lista firm" url="/admin/company/list.xhtml"/>
+                                    <p:menuitem value="Dodaj firmę" url="/admin/company/new.xhtml"/>
+                                </p:submenu>
+                                <p:menuitem value="Dodaj pozycję menu" url="/manager/course/new.xhtml" icon="ui-icon-arrowreturnthick-1-e" />
+                                <p:menuitem value="Dodaj składnik" url="/manager/ingredient/new.xhtml" icon="ui-icon-arrowreturnthick-1-e"/>
+                            </p:submenu>
+                            <p:menuitem value="Koszyk: #{orderBean.courseList.size()}" url="/user/cart.xhtml"/>
+                            <p:menuitem action="#{userMB.logOut()}" value="#{msgs.logout}"/>
+                            
+                            
+                        </p:menubar>
+                        <p:menubar rendered="piate">
+                            <p:menuitem value="Logowanie" url="/public/login.xhtml"/>
+                            <p:menuitem value="Rejestracja" url="/public/registration.xhtml"/>
+                        </p:menubar>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</h:body>
+</html>
