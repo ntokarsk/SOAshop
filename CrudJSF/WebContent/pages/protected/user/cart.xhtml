@@ -17,6 +17,8 @@
 		<ui:define name="content">
 			<div class="container">
 				<h:form>
+					<p:growl id="growl" showDetail="true" sticky="true" /> 
+					
 					<h:messages />
 					<p:dataTable rendered="#{orderController.listNotNull}"
 						value="#{orderController.orderedDishesList}" var="dish">

@@ -65,7 +65,8 @@
 												<h:commandButton
 													action="#{dishController.deleteIngredient(ingredient)}"
 													value="#{msgs.delete}"
-													rendered="#{categories.id==dish.categories.id and userMB.userAdmin}">
+													rendered="#{categories.id==dish.categories.id and userMB.userAdmin}"
+													actionListener="#{growlView.saveMessage}" update="growl">
 												</h:commandButton>
 											</p:panelGrid>
 										</ui:repeat>

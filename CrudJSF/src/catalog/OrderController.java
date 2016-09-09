@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import com.facade.DishFacade;
 import com.facade.OrderFacade;
+import com.mkyong.client.*;
 import com.model.Dish;
 import com.model.Order;
 import com.model.User;
@@ -34,7 +35,10 @@ public class OrderController implements Serializable {
 	@EJB
 	private OrderFacade orderFacade;
 	private Order order;
-
+	
+	
+	private JAXWSConnector paymentModule;
+	
 	private double orderPrice = 0;
 
 	public Dish getDish() {
@@ -63,9 +67,25 @@ public class OrderController implements Serializable {
 	}
 
 	public String payForOrder(User user) {
-		// checkPayment();
-		registerOrder(user);
+		if(checkPayment()) {
+			registerOrder(user);
+		}
 		return STAY_IN_THE_SAME_PAGE;
+	}
+	
+	public boolean checkPayment(){
+		String msg = new String();
+		try {
+			paymentModule = new JAXWSConnector();
+			msg = paymentModule.managePayment(getOrderDescription());
+			sendInfoMessageToUser("Payment system: " + msg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(msg.equals("accepted")) return true;
+		else return false;
+		
 	}
 
 	public void registerOrder(User user) {
@@ -84,7 +104,6 @@ public class OrderController implements Serializable {
 			order.setDescription(description);
 			orderFacade.update(order);
 			clearEverything();
-			sendInfoMessageToUser("successfull payment");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,6 +166,25 @@ public class OrderController implements Serializable {
 	public void setDishFacade(DishFacade dishFacade) {
 		this.dishFacade = dishFacade;
 	}
+	
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+	private String getOrderDescription(){
+		String orderDescription = "";
+		
+		for(int i=0; i < this.orderedDishesList.size(); i++){
+			orderDescription += this.orderedDishesList.get(i).getName() + "\n";
+		}
+		orderDescription += "TOTAL: " + getOrderPrice() + " PLN";
+		
+		return orderDescription;
+	}
 
 	class MockDish {
 		private String name;
@@ -195,11 +233,5 @@ public class OrderController implements Serializable {
 		return context;
 	}
 
-	public Order getOrder() {
-		return order;
-	}
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 }
