@@ -19,7 +19,6 @@ import com.facade.DishFacade;
 @ManagedBean
 @RequestScoped
 public class CategoriesController {
-	
 
 	@EJB
 	private DishFacade dishFacade;
@@ -29,12 +28,13 @@ public class CategoriesController {
 	private CategoriesFacade categoriesFacade;
 	
 	private static final String CREATE_CATEGORIES = "createCategories";
-	private static final String DELETE_CATEGORIES = "deleteCategories"; 
 	private static final String UPDATE_CATEGORIES = "updateCategories";
 	private static final String LIST_ALL_CATEGORIES = "categories";
 	private static final String STAY_IN_THE_SAME_PAGE = null;
 
 	private Categories categories;
+	
+	private Ingredient ingredient;
 
 	public Categories getCategories() {
 		
@@ -68,27 +68,6 @@ public class CategoriesController {
 		sendInfoMessageToUser("Operation Complete: Update");
 		return LIST_ALL_CATEGORIES;
 	}
-	
-	public String deleteCategoriesStart(){
-		return DELETE_CATEGORIES;
-	}
-	
-/*	public String deleteCategoriesEnd(){
-		try {
-			categoriesFacade.delete(categories);
-		} catch (EJBException e) {
-			sendErrorMessageToUser("Error. Call the ADM");
-			return STAY_IN_THE_SAME_PAGE;
-		}			
-		
-		sendInfoMessageToUser("Operation Complete: Delete");
-		
-		return LIST_ALL_CATEGORIES;
-	}*/
-	
-	//DANGER ZONE START
-
-	private Ingredient ingredient;
 
 	public Ingredient getIngredient() {
 		if (ingredient == null) {

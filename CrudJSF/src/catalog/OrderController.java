@@ -12,6 +12,9 @@ import javax.faces.context.FacesContext;
 
 import com.facade.DishFacade;
 import com.model.Dish;
+import com.facade.OrderFacade;
+import com.model.Order;
+
 
 @ManagedBean
 @SessionScoped
@@ -27,6 +30,10 @@ public class OrderController implements Serializable {
 	private Dish dish;
 
 	private List<Dish> orderedDishesList;
+	
+	@EJB
+	private OrderFacade orderFacade;
+	private Order order;
 
 	private double orderPrice = 0;
 
@@ -53,6 +60,16 @@ public class OrderController implements Serializable {
 
 	public List<Dish> getOrderedDishesList() {
 		return orderedDishesList;
+	}
+	
+/*	public String payForOrder(){
+		registerOrder();
+		checkPayment();
+		return STAY_IN_THE_SAME_PAGE;
+	}*/
+	
+	public void registerOrder(){
+		
 	}
 
 	public void addToOrderdDishesList(Dish _dish) {
@@ -149,5 +166,13 @@ public class OrderController implements Serializable {
 	private FacesContext getContext() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		return context;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 }
